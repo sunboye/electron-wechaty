@@ -1,0 +1,21 @@
+
+{
+  "openai": {
+    "apiKey": "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",
+    "proxy": "",
+    "sourceDir": "",
+    "organizationId": ""
+  },
+  "puppet": {
+    "name": "机器人",
+    "puppet": "wechaty-puppet-wechat",
+    "puppetOptions": {
+      "uos": true
+    }
+  },
+  "bot": {
+    "qrcodeUrl": "https://wechaty.js.org/qrcode/",
+    "warnTime": 10,
+    "clearTime": 3
+  }
+}
