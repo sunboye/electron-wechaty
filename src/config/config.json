@@ -1,9 +1,8 @@
-
 {
   "openai": {
-    "apiKey": "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",
+    "apiKey": "ak",
     "proxy": "",
-    "sourceDir": "",
+    "sourceDir": "openai_cache",
     "organizationId": ""
   },
   "puppet": {
@@ -16,6 +15,6 @@
   "bot": {
     "qrcodeUrl": "https://wechaty.js.org/qrcode/",
     "warnTime": 10,
-    "clearTime": 3
+    "clearTime": 5
   }
 }

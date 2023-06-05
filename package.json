@@ -15,12 +15,13 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "element-ui": "^2.15.13",
+    "file-box": "^1.5.5",
     "lodash": "^4.17.21",
+    "openai-self": "^1.1.6",
+    "qrcode-terminal": "^0.12.0",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2",
-    "file-box": "^1.5.5",
-    "openai-self": "^1.1.6",
     "wechaty": "^1.20.2",
     "wechaty-puppet": "^1.20.2",
     "wechaty-puppet-wechat": "^1.18.4"

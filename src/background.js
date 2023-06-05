@@ -3,14 +3,17 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-05-30 15:01:34
+ * @LastEditTime: 2023-06-05 17:31:06
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
 
-import { app, Menu, protocol, BrowserWindow } from 'electron'
+import { app, Menu, protocol, BrowserWindow, ipcMain } from 'electron'
+import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { getBotConfig, getChildModel, setBotConfig, setChildModel } from './util.js'
+import { startBot } from './services/index.js'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
@@ -26,13 +29,16 @@ async function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      autoHideMenuBar: true, // 取消顶部菜单
-
+      preload: path.join(__dirname, 'preload.js'),
+      // autoHideMenuBar: true, // 取消顶部菜单
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
+  })
+  ipcMain.on('bot:startBot', () => {
+    startBot()
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -73,6 +79,15 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+  
+  ipcMain.handle('bot:getBotConfig', getBotConfig)
+  ipcMain.handle('bot:getChildModel', getChildModel)
+  ipcMain.handle('bot:setBotConfig', (event, conf) => {
+    return setBotConfig(conf)
+  })
+  ipcMain.handle('bot:setChildModel', (event, conf) => {
+    return setChildModel(conf)
+  })
   createWindow()
 })
 

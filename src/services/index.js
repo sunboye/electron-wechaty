@@ -3,8 +3,8 @@
  * @Position: 
  * @Date: 2023-04-15 13:21:25
  * @LastEditors: yangss
- * @LastEditTime: 2023-04-15 22:12:25
- * @FilePath: \node-wechaty-self\src\index.js
+ * @LastEditTime: 2023-06-05 17:29:16
+ * @FilePath: \electron-wechaty\src\services\index.js
  */
 
 // Contact, Message,
@@ -27,9 +27,15 @@ bot.on('room-invite', onRoomInvite)
 bot.on('ready', () => {
   console.log('ready-go!!!')
 })
-bot.start()
+const startBot = () => {
+  bot.start()
   .then(() => {
     console.log(`Starter Bot Started.`)
     setBot(bot)
   })
   .catch(e => console.error(`StarterBot: ${e}`))
+}
+
+  export {
+    startBot
+  }

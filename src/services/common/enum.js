@@ -3,10 +3,10 @@
  * @Position: 
  * @Date: 2023-04-13 15:29:03
  * @LastEditors: yangss
- * @LastEditTime: 2023-04-18 16:05:36
- * @FilePath: \node-wechaty-self\src\common\enum.js
+ * @LastEditTime: 2023-06-05 17:54:13
+ * @FilePath: \electron-wechaty\src\services\common\enum.js
  */
-import childModel from '../../config/childModel.json' assert { type: "json" }
+import childModel from '../../config/childModel.json'
 const Message = {
   MessageStatus: {
     Unknown: 0, // 表示未知状态
