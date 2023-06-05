@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-06-05 11:26:38
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-05 17:57:08
+ * @LastEditTime: 2023-06-05 22:03:23
  * @FilePath: \electron-wechaty\src\util.js
  */
 // import config from './config.json' assert { type: "json" }
@@ -24,7 +24,9 @@ const getChildModel = () => {
 
 const setBotConfig = (conf) => {
   try {
-    fs.writeFileSync(path.join(__dirname, configPath), JSON.stringify(conf, null, 2))
+    const jsonStr = JSON.stringify(conf, null, 2)
+    console.log(jsonStr)
+    fs.writeFileSync(path.join(__dirname, configPath), jsonStr)
     return {success: true}
   } catch (error) {
     return {success: false, msg: error.message}
@@ -32,7 +34,9 @@ const setBotConfig = (conf) => {
 }
 const setChildModel = (conf) => {
   try {
-    fs.writeFileSync(path.join(__dirname, childPath), JSON.stringify(conf, null, 2))
+    const jsonStr = JSON.stringify(conf, null, 2)
+    console.log(jsonStr)
+    fs.writeFileSync(path.join(__dirname, childPath), jsonStr)
     return {success: true}
   } catch (error) {
     return {success: false, msg: error.message}

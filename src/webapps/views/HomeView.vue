@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-05 17:33:48
+ * @LastEditTime: 2023-06-05 22:12:48
  * @FilePath: \electron-wechaty\src\webapps\views\HomeView.vue
 -->
 <template>
@@ -16,10 +16,11 @@
       <el-form-item label="协议">
         <el-radio-group v-model="configForm.protocol">
           <el-radio label="wechaty-puppet-wechat">wechaty-puppet-wechat</el-radio>
+          <!-- <el-radio label="wechaty-puppet-wechat4u">wechaty-puppet-wechat4u</el-radio> -->
           <el-radio label="wechaty-puppet-padlocal">wechaty-puppet-padlocal</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item v-if="configForm.protocol === 1" label="token" prop="padToken">
+      <el-form-item v-if="configForm.protocol === 'wechaty-puppet-padlocal'" label="token" prop="padToken">
         <el-input v-model="configForm.padToken" clearable placeholder="padlocal协议不是免费协议，需要token"></el-input>
       </el-form-item>
       <el-form-item label="ApiKey" prop="apiKey">
@@ -115,6 +116,7 @@ export default {
           this.configBase.clearTime = config.bot.clearTime
         }
         if (child && Object.keys(child).length) {
+          console.log(child)
           this.childData = cloneDeep(child)
           const keys = Object.keys(child)
           keys.forEach(k => {
@@ -156,10 +158,7 @@ export default {
       console.log(this.configData)
       console.log(this.childData)
       Promise.all([window.electronAPI.setBotConfig(this.configData), window.electronAPI.setChildModel(this.childData)]).then(([config, child]) => {
-        console.log(config)
-        console.log(child)
         if (config.success && child.success) {
-          console.log('11')
           window.electronAPI.startBot()
         } else {
           this.$message.error(config.success ? child.msg || config.msg : config.msg || child.msg)
