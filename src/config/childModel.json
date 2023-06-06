@@ -7,28 +7,37 @@
   },
   "model-daviceChat": {
     "open": false,
-    "support": ["Text"],
+    "support": [
+      "Text"
+    ],
     "title": "不太聪明的聊天机器人",
     "desc": "不太聪明的聊天机器人-基于chatgpt3",
     "tip": "你好，你现在可以开始和我聊天，请问你有什么需要帮助的吗？"
   },
   "model-gptChat": {
     "open": true,
-    "support": ["Text", "Audio"],
+    "support": [
+      "Text",
+      "Audio"
+    ],
     "title": "智能聊天机器人-支持语音和文字输入",
     "desc": "智能聊天机器人-支持语音和文字-基于chatgpt3.5",
     "tip": "你好，你现在可以通过发送语音或者文字和我聊天，请问你有什么需要帮助的吗？"
   },
   "model-generateImage": {
     "open": true,
-    "support": ["Text"],
+    "support": [
+      "Text"
+    ],
     "title": "生成图片",
     "desc": "生成图片",
     "tip": "欢迎使用图片生成功能，请发送图片要求或者描述。"
   },
   "model-transcription": {
     "open": false,
-    "support": ["Audio"],
+    "support": [
+      "Audio"
+    ],
     "title": "音频转换",
     "desc": "语音转文字功能-该功能已集成至智能机器人",
     "tip": "欢迎使用语音转文字，请发送一段语音给我。"

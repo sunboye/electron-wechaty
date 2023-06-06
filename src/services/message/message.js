@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 10:50:49
  * @LastEditors: yangss
- * @LastEditTime: 2023-05-30 22:14:39
+ * @LastEditTime: 2023-06-06 17:50:08
  * @FilePath: \electron-wechaty\src\services\message\message.js
  */
 import { FileBox } from 'file-box'
@@ -12,8 +12,9 @@ import lodash from 'lodash';
 import openApi from 'openai-self'
 import config from '../../config/config.js'
 import { Message, childModel } from '../common/enum.js'
-
+import { getBot, setOpenAI, sendChatMessage } from  '../common/common.js'
 const openai = new openApi(config.openai);
+setOpenAI(openai)
 const { cloneDeep } = lodash;
 const userTemp = {
   unique_key: 'name',
@@ -24,7 +25,7 @@ const userTemp = {
   cleared: false
 }
 const userInfo = {}
-let bot = {}
+let bot = getBot()
 let intervalFunc = null
 
 const leaveModel = (key) => {
@@ -159,6 +160,7 @@ const intervalDelete = async () => {
           if (contact) {
             const userMsg = `提示：您已经${config.bot.warnTime}分钟没说话了，如果需要继续使用当前功能，请回复任意内容，否则${config.puppet.name}将在${config.bot.clearTime}分钟后离开，离开之后您可回复任意内容唤醒${config.puppet.name}。`
             contact.say(userMsg)
+            sendChatMessage(userMsg)
           }
           userInfo[key].warned = true
         }
@@ -167,13 +169,8 @@ const intervalDelete = async () => {
   }
 }
 
-const setBot = (val) => {
-  bot = val
-  openai.clearSourceDir()
-}
-
 const onMessage = async (msg) => {
-  if (!msg.room() && !msg.self() && msg.age() < 180) {
+  if (!msg.room() && (!msg.self() || (msg.self() && msg.type() === Message.MessageType.Text && msg.text().toString().indexOf('chat-') > -1)) && msg.age() < 180) {
     //  msg.talker().id || 
     // msg.talker().alise() || 
     const key = msg.talker().name()
@@ -186,8 +183,9 @@ const onMessage = async (msg) => {
           intervalFunc = setInterval(intervalDelete, 60000)
         }
         if (msg.type() === Message.MessageType.Text) {
-          const text = msg.text().toString()
+          const text = msg.self() ? msg.text().toString().split('chat-')[1] : msg.text().toString()
           console.log(`[${key}]: ${msg.text()}`)
+          sendChatMessage(`[${key}]: ${msg.text()}`)
           if (text === '*') {
             leaveModel(key)
             messageStr = welcomeMsg()
@@ -200,6 +198,7 @@ const onMessage = async (msg) => {
           }
         } else if (msg.type() === Message.MessageType.Audio) {
           console.log(`[${key}]: [语音]`)
+          sendChatMessage(`[${key}]: [语音]`)
           if (userInfo[key].cur_model) {
             try {
               // 不保存，直接传stream
@@ -236,15 +235,13 @@ const onMessage = async (msg) => {
     if (messageStr) {
       try {
         await msg.say(messageStr)
+        sendChatMessage(`[${config.puppet.name}]：${messageStr}`)
       } catch (error) {
         await msg.say(`Error: ${error.message ? error.message : error.code || ''}`)
+        sendChatMessage(`Error: ${error.message ? error.message : error.code || ''}`)
       }
     }
   }
 }
 // console.log(welcomeMsg())
-
-export {
-  setBot,
-  onMessage
-} 
+export default onMessage

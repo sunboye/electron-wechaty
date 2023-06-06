@@ -3,11 +3,11 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-05 22:12:48
+ * @LastEditTime: 2023-06-06 16:35:16
  * @FilePath: \electron-wechaty\src\webapps\views\HomeView.vue
 -->
 <template>
-  <div class="home">
+  <div class="home-page">
     <!-- inline -->
     <el-form ref="configForm" :model="configForm" :rules="configRules" label-position="left" label-width="100px">
       <el-form-item label="机器人名称" prop="name">
@@ -44,6 +44,8 @@
       </el-form-item>
       <el-form-item>
         <el-row class="btn-row">
+          <el-button @click="$router.push('/about')">前进</el-button>
+          <el-button @click="stopStart">退出</el-button>
           <el-button @click="reset">重置</el-button>
           <el-button class="btn-primary" type="primary" @click="startBot">启动机器人</el-button>
         </el-row>
@@ -51,16 +53,36 @@
     </el-form>
     <div v-if="isLoading" class="load-box">
       <div class="load-con">
-        <i class="el-icon-loading" style="font-size: 62px;color:#409EFF;"></i>
-        <p class="el-loading-text" style="padding-left: 8px;font-size: 22px;">机器人启动中...</p>
+        <div style="text-align: center">
+          <i class="el-icon-loading" style="font-size: 62px;color:#409EFF;"></i>
+        </div>
+        <div v-if="qrcodeImageUrl" style="padding: 24px;text-align: center;">
+          <div style="position: relative;">
+            <img :src="qrcodeImageUrl" width="200" height="200" alt="">
+            <div v-if="qrcodeMsg" style="z-index: 1000;width: 200px; height:200px;background-color: rgba(0, 0, 0, 0.9);position: absolute;display: inline-block;margin-left: -200px;">
+              <span style="line-height: 200px;color: #ffffff;">{{qrcodeMsg}}</span>
+            </div>
+            <p class="el-loading-text" style="padding-left: 8px;font-size: 22px;color: #ffffff;">{{qrcodeMsg ? qrcodeMsg : '请使用手机微信扫描二维码'}}</p>
+          </div>
+        </div>
+        <div v-else-if="startLogging" style="padding: 24px">
+          <pre class="el-loading-text" style="padding-left: 8px;font-size: 22px;color: #ffffff;">{{startLogging}}</pre>
+        </div>
+        <p v-else class="el-loading-text" style="padding-left: 8px;font-size: 22px;color: #ffffff;text-align: center;">{{reTimes > 1 ? `重新启动中...(${reTimes})` : '机器人启动中...'}}</p>
       </div>
+      <el-row v-if="startLogging || qrcodeImageUrl" style="bottom: 16px;position: absolute;text-align: center;width: 100%">
+        <el-button @click="stopStart">停止启动</el-button>
+        <!-- <el-button class="btn-primary" type="primary" @click="restartBot">重新启动</el-button> -->
+      </el-row>
     </div>
   </div>
 </template>
 
 <script>
 import { cloneDeep } from 'lodash'
+// import { ScanStatus } from 'wechaty'
 import Validate from '../common/validaters.js'
+// import { ipcRenderer } from 'electron'
 
 export default {
   components: {},
@@ -71,7 +93,7 @@ export default {
       childData: {},
       childModes: [],
       configBase: {
-        name: '机器人',
+        name: '',
         protocol: 'wechaty-puppet-wechat',
         padToken: '',
         apiKey: '',
@@ -81,7 +103,7 @@ export default {
         childs: ['model-welcome']
       },
       configForm: {
-        name: '机器人',
+        name: '',
         protocol: 'wechaty-puppet-wechat',
         padToken: '',
         apiKey: '',
@@ -96,14 +118,28 @@ export default {
         apiKey: [Validate.NotNull],
         warnTime: [Validate.NotNull, Validate.integerNum, Validate.MinNum(1), Validate.MaxNum(60)],
         clearTime: [Validate.NotNull, Validate.integerNum, Validate.MinNum(1), Validate.MaxNum(10)],
-      }
+      },
+      qrcodeMsg: '',
+      qrcodeImageUrl: '',
+      startLogging: '',
+      reTimes: 0,
     }
   },
   created() {
     this.reset()
+    window.electronAPI.sendMessage((_event, value) => {
+      if (value && value.type) {
+        this.$message[value.type](value.msg || value.message)
+      } else {
+        this.$message.success(value)
+      }
+    })
   },
   methods: {
     reset() {
+      this.configData = {}
+      this.childData = {}
+      this.childModes = []
       Promise.all([window.electronAPI.getBotConfig(), window.electronAPI.getChildModel()]).then(([config, child]) => {
         if (config && Object.keys(config).length) {
           this.configData = cloneDeep(config)
@@ -116,7 +152,6 @@ export default {
           this.configBase.clearTime = config.bot.clearTime
         }
         if (child && Object.keys(child).length) {
-          console.log(child)
           this.childData = cloneDeep(child)
           const keys = Object.keys(child)
           keys.forEach(k => {
@@ -130,9 +165,6 @@ export default {
     },
     startBot() {
       this.isLoading = true
-      // setTimeout(() => {
-      //   this.isLoading = false
-      //   this.$router.push('/about')
       // config
       this.configData.puppet.name = this.configForm.name
       if (this.configForm.protocol === 'wechaty-puppet-padlocal') {
@@ -155,22 +187,65 @@ export default {
       keys.forEach(k => {
         this.childData[k].open = this.configForm.childs && this.configForm.childs.length && this.configForm.childs.includes(k)
       })
-      console.log(this.configData)
-      console.log(this.childData)
       Promise.all([window.electronAPI.setBotConfig(this.configData), window.electronAPI.setChildModel(this.childData)]).then(([config, child]) => {
         if (config.success && child.success) {
           window.electronAPI.startBot()
+          this.getStartLogging()
         } else {
           this.$message.error(config.success ? child.msg || config.msg : config.msg || child.msg)
         }
-      }).finally(() => {
-        this.isLoading = false
+      })
+    },
+    resetParams() {
+      this.isLoading = false
+      this.startLogging = ''
+      this.qrcodeMsg = ''
+      this.qrcodeImageUrl = ''
+    },
+    stopStart() {
+      this.resetParams()
+      window.electronAPI.stopBot()
+    },
+    restartBot() {
+      this.stopStart()
+      this.reTimes++
+      this.startBot()
+    },
+    getStartLogging() {
+      window.electronAPI.updateStartLog((_event, value) => {
+        if (value && typeof value === 'object') {
+          if (Object.keys(value).includes('status')) {
+            if (value.status === 2 || value.status === 5) {
+              this.qrcodeImageUrl = value.qrcode
+            } else if (value.status === 3) {
+              this.qrcodeMsg = '已扫描，请确认登录'
+            } else if (value.status === 4) {
+              this.qrcodeImageUrl = ''
+              this.qrcodeMsg = '正在登录'
+            }
+            this.startLogging = this.startLogging ? `${this.startLogging}\n${this.qrcodeMsg}` : this.qrcodeMsg
+          } else if (Object.keys(value).includes('success')) {
+            this.resetParams()
+            if (value.success) {
+              this.$message.success(value.msg)
+              this.$router.push('/about')
+            } else {
+              this.$message.error(value.msg)
+            }
+          }
+        } else {
+          this.startLogging = this.startLogging ? `${this.startLogging}\n${value}` : value
+        }
+        console.log(value)
       })
     }
   }
 }
 </script>
 <style scoped>
+.home-page {
+  padding: 16px;
+}
 .btn-row {
   float: right;
 }
@@ -179,16 +254,16 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  position: absolute;
+  position: fixed;
   overflow: auto;
   margin: 0;
-  z-index: 9999;
-  background-color: rgba(0, 0, 0, 0.4)
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8)
 }
 .load-con {
-  top: calc(49% - 62px);
+  top: 0px;
   width: 100%;
-  text-align: center;
   position: absolute;
+  max-height: calc(100% - 200px);
 }
 </style>

@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-05 17:31:06
+ * @LastEditTime: 2023-06-06 18:21:25
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -12,8 +12,9 @@ import { app, Menu, protocol, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { getBotConfig, getChildModel, setBotConfig, setChildModel } from './util.js'
-import { startBot } from './services/index.js'
+import { getBotConfig, getChildModel, setBotConfig, setChildModel, deleteMemory } from './util.js'
+import { startBot, stopBot } from './services/index.js'
+import { setMainWin } from './services/common/common.js'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
@@ -40,7 +41,10 @@ async function createWindow() {
   ipcMain.on('bot:startBot', () => {
     startBot()
   })
-
+  ipcMain.on('bot:stopBot', () => {
+    stopBot()
+  })
+  setMainWin(win)
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -56,6 +60,7 @@ async function createWindow() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  deleteMemory()
   if (process.platform !== 'darwin') {
     app.quit()
   }
