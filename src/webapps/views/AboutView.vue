@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 18:13:37
+ * @LastEditTime: 2023-06-06 22:02:36
  * @FilePath: \electron-wechaty\src\webapps\views\AboutView.vue
 -->
 <template>
@@ -17,15 +17,24 @@
       <el-menu-item style="float:right;height: 45px;">
         <template slot="title">
           <div @click="stopStart" style="margin-top: -8px;">
-            <img src="../../../public/icons/icon.png" style="border-radius: 50%;margin-right: 8px;" width="36" height="36" alt="">
+            <img src="../../../public/icons/favicon.png" style="border-radius: 50%;margin-right: 8px;" width="36" height="36" alt="">
             <span>退出</span>
           </div>
         </template>
       </el-menu-item>
     </el-menu>
     <div class="chat-box">
-      <pre v-if="messageString">{{messageString}}</pre>
-      <div v-else style="text-align:center;margin-top: 10%;opacity: 0.8;">暂无数据</div>
+      <div v-if="messageString" style="padding: 16px">
+        <pre>{{messageString}}</pre>
+      </div>
+      <div v-else style="display: flex;margin-top: 15%;opacity: 0.6;justify-content: center;">
+        <div>
+          <span>可以开始对话了</span><br/>
+          <span>如果使用当前登录微信，自己和自己对话，则不会唤醒机器人</span><br/>
+          <span>如果需要自己和自己对话，唤醒机器人，则需在发送文本前加'chat-'</span><br/>
+          <span>例：chat-机器人你好呀</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -89,6 +98,5 @@ export default {
 }
 .chat-box {
   width: 100%;
-  padding: 16px;
 }
 </style>

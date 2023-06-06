@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 13:21:25
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 18:24:37
+ * @LastEditTime: 2023-06-06 21:39:41
  * @FilePath: \electron-wechaty\src\services\index.js
  */
 
@@ -70,7 +70,18 @@ const stopBot = () => {
   }
 }
 
+const stopHandleBot = () => {
+  const bot = getBot()
+  if (bot.logonoff()) {
+    bot.logout()
+  }
+  const openAI = getOpenAI()
+  openAI.clearSourceDir()
+  return bot.stop()
+}
+
 export {
   startBot,
-  stopBot
+  stopBot,
+  stopHandleBot
 }

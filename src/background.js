@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 18:21:25
+ * @LastEditTime: 2023-06-07 00:57:40
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
