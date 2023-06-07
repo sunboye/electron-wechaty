@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-06-05 11:26:38
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 14:13:31
+ * @LastEditTime: 2023-06-07 18:04:03
  * @FilePath: \electron-wechaty\src\util.js
  */
 
@@ -16,10 +16,12 @@ import fs from 'fs'
 import path from 'path'
 import { app } from 'electron'
 let appPath = __dirname
+let openaiCache = '../'
 if (app.isPackaged) {
   appPath == path.dirname(app.getPath('exe'))
   configPath = '../config/config.json'
   childPath = '../config/childModel.json'
+  openaiCache = '../../'
 }
 const getBotConfig = () => {
   return config
@@ -50,13 +52,13 @@ const setChildModel = (conf) => {
 }
 
 const deleteMemory = () => {
-  const fileNames = fs.readdirSync(path.join(appPath, '../'));
+  const fileNames = fs.readdirSync(path.join(appPath, openaiCache));
   console.log(fileNames)
   fileNames.forEach(item => {
     if (item && item.indexOf('memory-card') > -1) {
-      const filePath = path.join(appPath, '../', item)
+      const filePath = path.join(appPath, openaiCache, item)
       if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-        // fs.unlinkSync(filePath)
+        fs.unlinkSync(filePath)
       } else {
         console.log('context file is no exist!!!')
       }

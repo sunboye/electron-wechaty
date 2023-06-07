@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 13:21:25
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 21:39:41
+ * @LastEditTime: 2023-06-07 17:01:59
  * @FilePath: \electron-wechaty\src\services\index.js
  */
 
@@ -19,7 +19,7 @@ import onRoomInvite from './room/invite.js'
 import { setBot, getBot, getOpenAI, sendStartLog, sendMessage, setConsoleLog, getConsoleLog } from  './common/common.js'
 
 const startBot = () => {
-  const bot = WechatyBuilder.build(config.puppet)
+  const bot = getBot() && Object.keys(getBot()).length ? getBot() : WechatyBuilder.build(config.puppet)
   setConsoleLog(console.log)
   console.log = (val) => {
     sendStartLog(val)

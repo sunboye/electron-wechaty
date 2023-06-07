@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 10:10:34
+ * @LastEditTime: 2023-06-07 18:00:53
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -28,7 +28,7 @@ async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 680,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       // autoHideMenuBar: true, // 取消顶部菜单
@@ -38,7 +38,7 @@ async function createWindow() {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
   ipcMain.on('bot:startBot', () => {
     startBot()
   })
@@ -61,6 +61,7 @@ async function createWindow() {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  stopBot()
   deleteMemory()
   if (process.platform !== 'darwin') {
     app.quit()

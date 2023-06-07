@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 15:57:46
+ * @LastEditTime: 2023-06-07 17:58:33
  * @FilePath: \electron-wechaty\src\webapps\views\HomeView.vue
 -->
 <template>
@@ -16,7 +16,7 @@
       <el-form-item label="协议">
         <el-radio-group v-model="configForm.protocol">
           <el-radio label="wechaty-puppet-wechat">wechaty-puppet-wechat</el-radio>
-          <el-radio label="wechaty-puppet-wechat4u">wechaty-puppet-wechat4u</el-radio>
+          <!-- <el-radio label="wechaty-puppet-wechat4u">wechaty-puppet-wechat4u</el-radio> -->
           <el-radio label="wechaty-puppet-padlocal">wechaty-puppet-padlocal</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -56,7 +56,7 @@
         <div style="text-align: center">
           <i class="el-icon-loading" style="font-size: 62px;color:#409EFF;"></i>
         </div>
-        <div v-if="qrcodeImageUrl" style="padding: 24px;text-align: center;">
+        <div v-if="qrcodeImageUrl" style="padding: 32px;text-align: center;">
           <div style="position: relative;">
             <img :src="qrcodeImageUrl" width="200" height="200" alt="">
             <div v-if="qrcodeMsg" style="z-index: 1000;width: 200px; height:200px;background-color: rgba(0, 0, 0, 0.9);position: absolute;display: inline-block;margin-left: -200px;">
