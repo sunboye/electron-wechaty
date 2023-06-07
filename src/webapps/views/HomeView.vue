@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 21:53:34
+ * @LastEditTime: 2023-06-07 15:57:46
  * @FilePath: \electron-wechaty\src\webapps\views\HomeView.vue
 -->
 <template>
@@ -16,7 +16,7 @@
       <el-form-item label="协议">
         <el-radio-group v-model="configForm.protocol">
           <el-radio label="wechaty-puppet-wechat">wechaty-puppet-wechat</el-radio>
-          <!-- <el-radio label="wechaty-puppet-wechat4u">wechaty-puppet-wechat4u</el-radio> -->
+          <el-radio label="wechaty-puppet-wechat4u">wechaty-puppet-wechat4u</el-radio>
           <el-radio label="wechaty-puppet-padlocal">wechaty-puppet-padlocal</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -44,8 +44,8 @@
       </el-form-item>
       <el-form-item>
         <el-row class="btn-row">
-          <el-button @click="$router.push('/about')">前进</el-button>
-          <el-button @click="stopStart">退出</el-button>
+          <!-- <el-button @click="$router.push('/about')">前进</el-button>
+          <el-button @click="stopStart">退出</el-button> -->
           <el-button @click="reset">重置</el-button>
           <el-button class="btn-primary" type="primary" @click="startBot">启动机器人</el-button>
         </el-row>

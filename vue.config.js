@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 00:53:30
+ * @LastEditTime: 2023-06-07 16:17:18
  * @FilePath: \electron-wechaty\vue.config.js
  */
 const { defineConfig } = require('@vue/cli-service')
@@ -15,14 +15,21 @@ module.exports = defineConfig({
       preload: 'src/preload.js',
       builderOptions: {
         // build配置在此处
-        productName:"wechaty-robot",
+        asar: false,
+        productName:"Wechaty Robot",
         appId: "com.wechaty.robot.songsong",
         copyright:"songsong",
         // directories: {
         //   output: "dist_electron"
         // },
+        extraResources: [
+          {
+            from: './src/config',
+            to: 'config'
+          }
+        ],
         win: {
-          icon: "./public/icons/favicon.ico",
+          icon: "./public/icons/favicon.png",
           target: [
             {
               target: "nsis",
@@ -39,14 +46,14 @@ module.exports = defineConfig({
         },
         nsis: {
           oneClick: false,
-          // allowElevation: true,
+          allowElevation: true,
           allowToChangeInstallationDirectory: true,
           installerIcon: "./public/icons/favicon.ico",
           uninstallerIcon: "./public/icons/favicon.ico",
           installerHeaderIcon: "./public/icons/favicon.ico",
           createDesktopShortcut: true,
           createStartMenuShortcut: true,
-          shortcutName: 'song-robot'
+          shortcutName: 'Wechaty Robot'
         }
       }
     }

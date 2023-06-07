@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 00:57:40
+ * @LastEditTime: 2023-06-07 10:10:34
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -38,6 +38,7 @@ async function createWindow() {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
+  win.webContents.openDevTools()
   ipcMain.on('bot:startBot', () => {
     startBot()
   })
