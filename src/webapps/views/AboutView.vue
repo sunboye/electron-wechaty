@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 11:54:23
+ * @LastEditTime: 2023-06-09 17:56:57
  * @FilePath: \electron-wechaty\src\webapps\views\AboutView.vue
 -->
 <template>
@@ -67,6 +67,18 @@ export default {
           this.$message[value.type](value.msg || value.message)
         } else {
           this.$message.success(value)
+        }
+      })
+      window.electronAPI.updateStartLog((_event, value) => {
+        if (value) {
+          if (Object.keys(value).includes('success')) {
+            if (value.success) {
+              this.stopStart()
+            } else {
+              this.$message.error(value && value.msg ? value.msg : value)
+            }
+          }
+          
         }
       })
     },

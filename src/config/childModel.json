@@ -18,8 +18,8 @@
   "model-gptChat": {
     "open": true,
     "support": [
-      "文本",
-      "语音"
+      "Text",
+      "Audio"
     ],
     "title": "智能聊天机器人-支持语音和文字输入",
     "desc": "智能聊天机器人-支持语音和文字-基于chatgpt3.5",
@@ -29,7 +29,7 @@
   "model-generateImage": {
     "open": true,
     "support": [
-      "文本"
+      "Text"
     ],
     "title": "生成图片",
     "desc": "生成图片",
