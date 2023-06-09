@@ -3,18 +3,15 @@
  * @Position: 
  * @Date: 2023-04-15 10:50:49
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 17:50:08
+ * @LastEditTime: 2023-06-09 17:02:55
  * @FilePath: \electron-wechaty\src\services\message\message.js
  */
 import { FileBox } from 'file-box'
 import path from 'path';
 import lodash from 'lodash';
-import openApi from 'openai-self'
-import config from '../../config/config.js'
-import { Message, childModel } from '../common/enum.js'
-import { getBot, setOpenAI, sendChatMessage } from  '../common/common.js'
-const openai = new openApi(config.openai);
-setOpenAI(openai)
+import { Message } from '../common/enum.js'
+import { getOpenAI, getBot, getCommonConfig, getCommonChildModel, sendChatMessage } from  '../common/common.js'
+
 const { cloneDeep } = lodash;
 const userTemp = {
   unique_key: 'name',
@@ -25,10 +22,12 @@ const userTemp = {
   cleared: false
 }
 const userInfo = {}
-let bot = getBot()
 let intervalFunc = null
 
 const leaveModel = (key) => {
+  const childModel = getCommonChildModel() || {}
+  openai
+  const openai = getOpenAI() || {}
   if (userInfo[key].cur_model === childModel['model-gptChat'].union_num || userInfo[key].cur_model === childModel['model-transcription'].union_num) {
     openai.clearContext(key)
   }
@@ -38,6 +37,7 @@ const leaveModel = (key) => {
 const getWarnMsg = (key) => {
   if (userInfo[key].cur_model) {
     let Msg = ''
+    const childModel = getCommonChildModel() || {}
     Object.keys(childModel).forEach(item => {
       if (childModel[item].open && childModel[item].union_num && childModel[item].support && childModel[item].support.length && userInfo[key].cur_model === childModel[item].union_num) {
         userInfo[key].cur_model = childModel[item].union_num
@@ -51,6 +51,7 @@ const getWarnMsg = (key) => {
 }
 
 const getCurModelText = async (key, text) => {
+  const childModel = getCommonChildModel() || {}
   if (userInfo[key].cur_model === childModel['model-daviceChat'].union_num) {
     return await nomalCompletions(text)
   } else if (userInfo[key].cur_model === childModel['model-gptChat'].union_num) {
@@ -62,6 +63,7 @@ const getCurModelText = async (key, text) => {
   }
 }
 const getCurModelAudio = async (key, file) => {
+  const childModel = getCommonChildModel() || {}
   if (userInfo[key].cur_model === childModel['model-transcription'].union_num) {
     return await createTranscription(file)
   } else if (userInfo[key].cur_model === childModel['model-gptChat'].union_num) {
@@ -75,6 +77,7 @@ const getCurModelAudio = async (key, file) => {
 const setModel = (key, text) => {
   const bottomTips = '提示：回复*可返回主菜单'
   let sunWelcomMsg = ''
+  const childModel = getCommonChildModel() || {}
   Object.keys(childModel).forEach(item => {
     if (childModel[item].open && childModel[item].union_num && text === childModel[item].union_num.toString()) {
       userInfo[key].cur_model = childModel[item].union_num
@@ -86,6 +89,7 @@ const setModel = (key, text) => {
 
 const welcomeMsg = () => {
   let modelStr = ''
+  const childModel = getCommonChildModel() || {}
   Object.keys(childModel).forEach(item => {
     if (item && childModel[item] && childModel[item].open && childModel[item].union_num && !isNaN(childModel[item].union_num) && parseInt(childModel[item].union_num)) {
       modelStr += `${childModel[item].union_num} - ${childModel[item].title}\n`
@@ -95,6 +99,7 @@ const welcomeMsg = () => {
   return welcomeStr
 }
 const createTranscription = async (file) => {
+  const openai = getOpenAI() || {}
   const res = await openai.createTranscription(file)
   if (res.success) {
     const text = res.text  || ''
@@ -104,6 +109,7 @@ const createTranscription = async (file) => {
   }
 }
 const createAudioChat = async (key, file) => {
+  const openai = getOpenAI() || {}
   const res = await openai.createTranscription(file)
   if (res.success) {
     const text = res.text  || ''
@@ -118,6 +124,7 @@ const chatCompletions = async (key, text) => {
     max_tokens: 1000,
     context: key
   }
+  const openai = getOpenAI() || {}
   const res = await openai.createChatCompletions(text, params)
   if (res.success) {
     return res.choices && res.choices.length && res.choices[0].message ? res.choices[0].message.content : ''
@@ -130,6 +137,7 @@ const nomalCompletions = async (text) => {
   const params = {
     max_tokens: 800
   }
+  const openai = getOpenAI() || {}
   const res = await openai.createNomalCompletions(text, params)
   if (res.success) {
     return res.choices && res.choices.length && res.choices[0] ? res.choices[0].text :''
@@ -140,6 +148,7 @@ const nomalCompletions = async (text) => {
 
 const generateImage = async (text) => {
   // 生成图片功能
+  const openai = getOpenAI() || {}
   const res = await openai.generateImage(text)
   const fileBox = res.success && res.data && res.data[0].url ? FileBox.fromUrl(res.data[0].url) : res.message ? res.message : res.code
   return fileBox
@@ -148,6 +157,7 @@ const generateImage = async (text) => {
 const intervalDelete = async () => {
   if (Object.keys(userInfo).length) {
     const now = new Date().getTime()
+    const config = getCommonConfig() || {}
     for (let key in userInfo) {
       if (userInfo[key] && userInfo[key].cur_model && userInfo[key].last_time  && now > userInfo[key].last_time && now - userInfo[key].last_time > parseInt(config.bot.warnTime) * 60000) {
         if (userInfo[key].warned) {
@@ -156,7 +166,7 @@ const intervalDelete = async () => {
             delete userInfo[key]
           }
         } else {
-          const contact = await bot.Contact.find({ name: key})
+          const contact = await getBot().Contact.find({ name: key})
           if (contact) {
             const userMsg = `提示：您已经${config.bot.warnTime}分钟没说话了，如果需要继续使用当前功能，请回复任意内容，否则${config.puppet.name}将在${config.bot.clearTime}分钟后离开，离开之后您可回复任意内容唤醒${config.puppet.name}。`
             contact.say(userMsg)
@@ -206,6 +216,7 @@ const onMessage = async (msg) => {
               // const stream = await filebox.toStream()
               // messageStr = await getCurModelAudio(key, stream)
               // 保存音频资源到本地
+              const openai = getOpenAI() || {}
               if (openai.createInSourceDir('audio')) {
                 const savePath = path.resolve(openai.getSourceDir(), 'audio', `${key}-${new Date().getTime()}.mp3`)
                 await filebox.toFile(savePath, true);
@@ -231,6 +242,7 @@ const onMessage = async (msg) => {
     } else {
       messageStr = 'Error: Failed to obtain key, please contact the administrator by phone'
     }
+    const config = getCommonConfig() || {}
     console.log(`[${config.puppet.name}]：${messageStr}`)
     if (messageStr) {
       try {

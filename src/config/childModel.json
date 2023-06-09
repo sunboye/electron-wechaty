@@ -3,7 +3,8 @@
     "open": true,
     "title": "欢迎页",
     "desc": "欢迎页主菜单",
-    "tip": "欢迎使用松松的机器人\n\n请回复功能简介前的数字，开启对应功能："
+    "tip": "欢迎使用松松的机器人\n\n请回复功能简介前的数字，开启对应功能：",
+    "union_num": 0
   },
   "model-daviceChat": {
     "open": false,
@@ -17,21 +18,23 @@
   "model-gptChat": {
     "open": true,
     "support": [
-      "Text",
-      "Audio"
+      "文本",
+      "语音"
     ],
     "title": "智能聊天机器人-支持语音和文字输入",
     "desc": "智能聊天机器人-支持语音和文字-基于chatgpt3.5",
-    "tip": "你好，你现在可以通过发送语音或者文字和我聊天，请问你有什么需要帮助的吗？"
+    "tip": "你好，你现在可以通过发送语音或者文字和我聊天，请问你有什么需要帮助的吗？",
+    "union_num": 1
   },
   "model-generateImage": {
     "open": true,
     "support": [
-      "Text"
+      "文本"
     ],
     "title": "生成图片",
     "desc": "生成图片",
-    "tip": "欢迎使用图片生成功能，请发送图片要求或者描述。"
+    "tip": "欢迎使用图片生成功能，请发送图片要求或者描述。",
+    "union_num": 2
   },
   "model-transcription": {
     "open": false,

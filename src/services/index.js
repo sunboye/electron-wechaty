@@ -3,13 +3,13 @@
  * @Position: 
  * @Date: 2023-04-15 13:21:25
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 18:32:43
+ * @LastEditTime: 2023-06-09 16:38:35
  * @FilePath: \electron-wechaty\src\services\index.js
  */
 
 // Contact, Message,
 import { WechatyBuilder } from 'wechaty'
-import config from '../config/config.js'
+import openApi from 'openai-self'
 import onScan from './scan/scan.js'
 import onLogin from './login/login.js'
 import onLogout from './logout/logout.js'
@@ -17,9 +17,10 @@ import onMessage from './message/message.js'
 import onFriendship from './friend/friendship.js'
 import onRoomInvite from './room/invite.js'
 import { deleteMemory } from '../util.js'
-import { setBot, getBot, getOpenAI, sendStartLog, sendMessage, setConsoleLog, getConsoleLog } from  './common/common.js'
+import { getCommonConfig, setBot, getBot, setOpenAI, getOpenAI, sendStartLog, sendMessage, setConsoleLog, getConsoleLog } from  './common/common.js'
 
 const startBot = () => {
+  const config = getCommonConfig()
   const bot = WechatyBuilder.build(config.puppet)
   setConsoleLog(console.log)
   console.log = (val) => {
@@ -41,7 +42,8 @@ const startBot = () => {
   setBot(bot)
   bot.start().then(() => {
     sendStartLog(`Starter Bot Started.`)
-    const openAI = getOpenAI()
+    const openAI = new openApi(config.openai);
+    setOpenAI(openAI)
     openAI.clearSourceDir()
   }).catch(e => {
     sendStartLog(`StarterBot: ${e}`)

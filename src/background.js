@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 18:00:53
+ * @LastEditTime: 2023-06-09 15:56:29
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -12,7 +12,7 @@ import { app, Menu, protocol, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { getBotConfig, getChildModel, setBotConfig, setChildModel, deleteMemory } from './util.js'
+import { getBotConfig, getChildModel, setBotConfig, setChildModel } from './util.js'
 import { startBot, stopBot } from './services/index.js'
 import { setMainWin } from './services/common/common.js'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -62,10 +62,11 @@ app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   stopBot()
-  deleteMemory()
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  setTimeout(() => {
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
+  }, 600)
 })
 
 app.on('activate', () => {

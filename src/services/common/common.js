@@ -3,13 +3,45 @@
  * @Position: 
  * @Date: 2023-06-06 09:45:58
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 18:09:58
+ * @LastEditTime: 2023-06-09 16:53:59
  * @FilePath: \electron-wechaty\src\services\common\common.js
  */
+import { Message } from './enum.js'
+
 let robot = {}
 let mainwin = {}
 let openAI = {}
 let consoleObj = {}
+let childModel = {}
+let config = {}
+
+const setCommonConfig = (conf) => {
+  config = conf || {}
+}
+
+const getCommonConfig = () => {
+  return config
+}
+const getCommonChildModel = () => {
+  return childModel
+}
+
+const setCommonChildModel = (conf) => {
+  const confTemp = conf || {}
+  let modelIndex = 0
+  Object.keys(confTemp).forEach(item => {
+    if (item === 'model-welcome') {
+      confTemp[item].open = true
+      confTemp[item].union_num = 0
+    } else {
+      if (confTemp[item].open) {
+        confTemp[item].union_num = ++modelIndex
+        confTemp[item].support = confTemp[item].support.map(item => Message.MessageIntro[item])
+      }
+    }
+  })
+  childModel = confTemp || {}
+}
 
 const setBot = (bot) => {
   robot = bot || {}
@@ -65,6 +97,10 @@ const getUserAvatar = () => {
 }
 
 export {
+  setCommonConfig,
+  getCommonConfig,
+  getCommonChildModel,
+  setCommonChildModel,
   setBot,
   getBot,
   setMainWin,

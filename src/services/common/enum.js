@@ -3,10 +3,9 @@
  * @Position: 
  * @Date: 2023-04-13 15:29:03
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-05 17:54:13
+ * @LastEditTime: 2023-06-09 16:51:10
  * @FilePath: \electron-wechaty\src\services\common\enum.js
  */
-import childModel from '../../config/childModel.json'
 const Message = {
   MessageStatus: {
     Unknown: 0, // 表示未知状态
@@ -38,20 +37,6 @@ const Message = {
   }
 }
 
-let modelIndex = 0
-Object.keys(childModel).forEach(item => {
-  if (item === 'model-welcome') {
-    childModel[item].open = true
-    childModel[item].union_num = 0
-  } else {
-    if (childModel[item].open) {
-      childModel[item].union_num = ++modelIndex
-      childModel[item].support = childModel[item].support.map(item => Message.MessageIntro[item])
-    }
-  }
-})
-
 export {
-  Message,
-  childModel
+  Message
 }

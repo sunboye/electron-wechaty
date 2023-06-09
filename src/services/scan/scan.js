@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-14 19:34:52
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-06 14:36:27
+ * @LastEditTime: 2023-06-09 15:50:19
  * @FilePath: \electron-wechaty\src\services\scan\scan.js
  */
 import { ScanStatus } from 'wechaty'
@@ -15,7 +15,7 @@ const onScan = (qrcode, status) => {
   if (status === ScanStatus.Waiting || status === ScanStatus.Timeout) {
     
     // const qrcodeImageUrl = [config.bot.qrcodeUrl, encodeURIComponent(qrcode)].join('')
-    sendStartLog(`onScan: ${ScanStatus[status]}(${status}) - ${qrcode}`)
+    // sendStartLog(`onScan: ${ScanStatus[status]}(${status}) - ${qrcode}`)
     QRC.toDataURL(qrcode).then(url => {
       sendStartLog({qrcode: url, status: status})
     }).catch(e => {
