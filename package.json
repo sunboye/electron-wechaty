@@ -1,9 +1,9 @@
 {
-  "name": "wechaty Robot",
+  "name": "Wechaty-robot",
   "version": "1.1.0",
   "private": true,
   "author": {
-    "name" : "松松",
+    "name" : "1332551701@qq.com",
     "email" : "1332551701@qq.com",
     "url" : "https://github.com/sunboye/electron-wechaty"
   },
