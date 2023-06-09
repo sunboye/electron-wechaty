@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 13:21:25
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-09 21:19:22
+ * @LastEditTime: 2023-06-09 23:57:29
  * @FilePath: \electron-wechaty\src\services\index.js
  */
 
@@ -46,10 +46,13 @@ const startBot = () => {
       sendStartLog(val)
     }
   }
+  let openAI = getOpenAI()
+  if (!openAI || Object.keys(openAI).length < 1) {
+    openAI = new openApi(config.openai);
+    setOpenAI(openAI)
+  }
   bot.start().then(() => {
     sendStartLog(`Starter Bot Started.`)
-    const openAI = new openApi(config.openai);
-    setOpenAI(openAI)
     openAI.clearSourceDir()
   }).catch(e => {
     sendStartLog(`StarterBot: ${e}`)

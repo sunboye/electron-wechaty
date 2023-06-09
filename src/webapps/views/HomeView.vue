@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-09 21:20:58
+ * @LastEditTime: 2023-06-10 00:05:23
  * @FilePath: \electron-wechaty\src\webapps\views\HomeView.vue
 -->
 <template>
@@ -164,37 +164,43 @@ export default {
       })
     },
     startBot() {
-      this.isLoading = true
-      // config
-      this.configData.puppet.name = this.configForm.name
-      if (this.configForm.protocol === 'wechaty-puppet-padlocal') {
-        this.configData.puppet.puppet = this.configForm.protocol
-        this.configData.puppet.puppetOptions = {
-          token: this.configForm.padToken
-        }
-      } else {
-        this.configData.puppet.puppet = this.configForm.protocol
-        this.configData.puppet.puppetOptions = {
-          uos: true
-        }
-      }
-      this.configData.openai.apiKey = this.configForm.apiKey
-      this.configData.openai.proxy = this.configForm.proxy
-      this.configData.bot.warnTime = Number(this.configForm.warnTime)
-      this.configData.bot.clearTime = Number(this.configForm.clearTime)
-      // child
-      const keys = Object.keys(this.childData)
-      keys.forEach(k => {
-        this.childData[k].open = this.configForm.childs && this.configForm.childs.length && this.configForm.childs.includes(k)
-      })
-      Promise.all([window.electronAPI.setBotConfig(this.configData), window.electronAPI.setChildModel(this.childData)]).then(([config, child]) => {
-        if (config.success && child.success) {
-          window.electronAPI.startBot()
-          this.getStartLogging()
+      this.$refs.configForm.validate((valid) => {
+        if (valid) {
+          this.isLoading = true
+          // config
+          this.configData.puppet.name = this.configForm.name
+          if (this.configForm.protocol === 'wechaty-puppet-padlocal') {
+            this.configData.puppet.puppet = this.configForm.protocol
+            this.configData.puppet.puppetOptions = {
+              token: this.configForm.padToken
+            }
+          } else {
+            this.configData.puppet.puppet = this.configForm.protocol
+            this.configData.puppet.puppetOptions = {
+              uos: true
+            }
+          }
+          this.configData.openai.apiKey = this.configForm.apiKey
+          this.configData.openai.proxy = this.configForm.proxy
+          this.configData.bot.warnTime = Number(this.configForm.warnTime)
+          this.configData.bot.clearTime = Number(this.configForm.clearTime)
+          // child
+          const keys = Object.keys(this.childData)
+          keys.forEach(k => {
+            this.childData[k].open = this.configForm.childs && this.configForm.childs.length && this.configForm.childs.includes(k)
+          })
+          Promise.all([window.electronAPI.setBotConfig(this.configData), window.electronAPI.setChildModel(this.childData)]).then(([config, child]) => {
+            if (config.success && child.success) {
+              window.electronAPI.startBot()
+              this.getStartLogging()
+            } else {
+              this.$message.error(config.success ? child.msg || config.msg : config.msg || child.msg)
+            }
+          })
         } else {
-          this.$message.error(config.success ? child.msg || config.msg : config.msg || child.msg)
+          this.$message.error('no validate!!')
         }
-      })
+      });
     },
     resetParams() {
       this.isLoading = false

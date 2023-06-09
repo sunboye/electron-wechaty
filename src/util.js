@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-06-05 11:26:38
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-09 22:03:55
+ * @LastEditTime: 2023-06-10 00:21:15
  * @FilePath: \electron-wechaty\src\util.js
  */
 
@@ -17,9 +17,9 @@ let appPath = __dirname
 let openaiMemery = '../'
 if (app.isPackaged) {
   appPath = path.dirname(app.getPath('exe'))
-  configPath = '../config/config.json'
-  childPath = '../config/childModel.json'
-  openaiMemery = '../../'
+  configPath = './resources/config/config.json'
+  childPath = './resources/config/childModel.json'
+  openaiMemery = './'
 }
 const getBotConfig = () => {
   const config = fs.readFileSync(path.join(appPath, configPath), 'utf-8')
@@ -32,11 +32,9 @@ const getChildModel = () => {
 
 const setBotConfig = (conf) => {
   try {
-    console.log(appPath)
-    
     const jsonStr = JSON.stringify(conf, null, 2)
     fs.writeFileSync(path.join(appPath, configPath), jsonStr)
-    conf.openai.sourceDir = app.isPackaged ? `../${conf.openai.sourceDir}` : `./${conf.openai.sourceDir}`
+    conf.openai.sourceDir = app.isPackaged ? `./resources/${conf.openai.sourceDir}` : conf.openai.sourceDir
     setCommonConfig(conf)
     return {success: true}
   } catch (error) {
