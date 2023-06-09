@@ -1,6 +1,6 @@
 {
   "openai": {
-    "apiKey": "sk-ceshi-1113300-shi",
+    "apiKey": "",
     "proxy": "",
     "sourceDir": "openai_cache",
     "organizationId": ""
