@@ -21,35 +21,29 @@ import { getCommonConfig, setBot, getBot, setOpenAI, getOpenAI, sendStartLog, se
 
 const startBot = () => {
   const config = getCommonConfig()
-  let bot = getBot()
-  if (!bot || Object.keys(bot).length < 1) {
-    bot = WechatyBuilder.build(config.puppet)
-    setBot(bot)
-    bot.on('scan',    onScan)
-    bot.on('login',   onLogin)
-    bot.on('logout',  onLogout)
-    bot.on('message', onMessage)
-    bot.on('friendship',  onFriendship)
-    bot.on('room-invite', onRoomInvite)
-    bot.on('ready', () => {
-      sendStartLog('ready-go!!!')
-      console.log = getConsoleLog()
-      setTimeout(() => {
-        sendStartLog({success: true, msg: '启动成功'})
-      }, 500)
-    })
-    bot.on('error', (error) => {
-      sendStartLog({success: false, msg: error.message})
-    })
-    setConsoleLog(console.log)
-    console.log = (val) => {
-      sendStartLog(val)
-    }
-  }
-  let openAI = getOpenAI()
-  if (!openAI || Object.keys(openAI).length < 1) {
-    openAI = new openApi(config.openai);
-    setOpenAI(openAI)
+  const openAI = new openApi(config.openai);
+  setOpenAI(openAI)
+  const bot = WechatyBuilder.build(config.puppet)
+  setBot(bot)
+  bot.on('scan',    onScan)
+  bot.on('login',   onLogin)
+  bot.on('logout',  onLogout)
+  bot.on('message', onMessage)
+  bot.on('friendship',  onFriendship)
+  bot.on('room-invite', onRoomInvite)
+  bot.on('ready', () => {
+    sendStartLog('ready-go!!!')
+    console.log = getConsoleLog()
+    setTimeout(() => {
+      sendStartLog({success: true, msg: '启动成功'})
+    }, 500)
+  })
+  bot.on('error', (error) => {
+    sendStartLog({success: false, msg: error.message})
+  })
+  setConsoleLog(console.log)
+  console.log = (val) => {
+    sendStartLog(val)
   }
   bot.start().then(() => {
     sendStartLog(`Starter Bot Started.`)
