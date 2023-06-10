@@ -147,7 +147,7 @@ export default {
           this.configBase.protocol = config.puppet.puppet
           this.configBase.padToken = config.puppet.puppetOptions && config.puppet.puppetOptions.token ? config.puppet.puppetOptions.token : ''
           this.configBase.apiKey = config.openai.apiKey || config.openai.apikey 
-          this.configBase.proxy = config.openai.proxy && config.openai.proxy.indexOf('//') ? config.openai.proxy.split('//')[1] : config.openai.proxy || ''
+          this.configBase.proxy = config.openai.proxy && config.openai.proxy.indexOf('//') > -1 ? config.openai.proxy.split('//')[1] : config.openai.proxy || ''
           this.configBase.warnTime = config.bot.warnTime
           this.configBase.clearTime = config.bot.clearTime
         }
@@ -181,7 +181,7 @@ export default {
             }
           }
           this.configData.openai.apiKey = this.configForm.apiKey
-          this.configData.openai.proxy = this.configForm.proxy
+          this.configData.openai.proxy = this.configForm.proxy ? `http://${this.configForm.proxy}` : ''
           this.configData.bot.warnTime = Number(this.configForm.warnTime)
           this.configData.bot.clearTime = Number(this.configForm.clearTime)
           // child
