@@ -8229,10 +8229,10 @@ open@^8.0.2, open@^8.0.9:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-openai-self@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.npmmirror.com/openai-self/-/openai-self-1.1.6.tgz#cf9fbed011e8739457a9b8fe07cb338b4bd8870e"
-  integrity sha512-4eBxTx5WYRMWkbXIMdRNtUJXwi2sw/vtuYSM/CAlDPO08jV/QcqWzWtREdlQcELjkgUvtnlX29p+4I+JJhxknQ==
+openai-self@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/openai-self/-/openai-self-1.1.7.tgz#0d19402a9b1d1ef1ac9055eccb46a26749058230"
+  integrity sha512-ZqCgxe7aSTt5TVfMgRTbLvzoabWtxjMeSEtscbF81fmzFvBb9AUwraEbzIDzENoS82xI78RP1X3+M+W1GtBROQ==
   dependencies:
     axios "^1.3.4"
     https-proxy-agent "^5.0.1"

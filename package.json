@@ -24,7 +24,7 @@
     "element-ui": "^2.15.13",
     "file-box": "^1.5.5",
     "lodash": "^4.17.21",
-    "openai-self": "^1.1.6",
+    "openai-self": "^1.1.7",
     "qrcode": "^1.5.3",
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
