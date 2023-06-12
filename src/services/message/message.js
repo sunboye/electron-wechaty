@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 10:50:49
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-12 15:10:55
+ * @LastEditTime: 2023-06-12 15:14:37
  * @FilePath: \electron-wechaty\src\services\message\message.js
  */
 import { FileBox } from 'file-box'
@@ -121,6 +121,7 @@ const chatCompletions = async (key, text) => {
   // 3.5模型
   const params = {
     max_tokens: 1000,
+    max_arr: 30,
     context: key
   }
   const openai = getOpenAI() || {}
