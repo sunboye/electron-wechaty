@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 10:50:49
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-09 17:02:55
+ * @LastEditTime: 2023-06-12 15:10:55
  * @FilePath: \electron-wechaty\src\services\message\message.js
  */
 import { FileBox } from 'file-box'
@@ -26,7 +26,6 @@ let intervalFunc = null
 
 const leaveModel = (key) => {
   const childModel = getCommonChildModel() || {}
-  openai
   const openai = getOpenAI() || {}
   if (userInfo[key].cur_model === childModel['model-gptChat'].union_num || userInfo[key].cur_model === childModel['model-transcription'].union_num) {
     openai.clearContext(key)
@@ -170,7 +169,7 @@ const intervalDelete = async () => {
           if (contact) {
             const userMsg = `提示：您已经${config.bot.warnTime}分钟没说话了，如果需要继续使用当前功能，请回复任意内容，否则${config.puppet.name}将在${config.bot.clearTime}分钟后离开，离开之后您可回复任意内容唤醒${config.puppet.name}。`
             contact.say(userMsg)
-            sendChatMessage(userMsg)
+            sendChatMessage(`${new Date().toLocaleString()}\n${userMsg}`)
           }
           userInfo[key].warned = true
         }
@@ -194,8 +193,8 @@ const onMessage = async (msg) => {
         }
         if (msg.type() === Message.MessageType.Text) {
           const text = msg.self() ? msg.text().toString().split('chat-')[1] : msg.text().toString()
-          console.log(`[${key}]: ${msg.text()}`)
-          sendChatMessage(`[${key}]: ${msg.text()}`)
+          console.log(`[${key}](${msg.date().toLocaleString()}): ${msg.text()}`)
+          sendChatMessage(`[${key}](${msg.date().toLocaleString()}): ${msg.text()}`)
           if (text === '*') {
             leaveModel(key)
             messageStr = welcomeMsg()
@@ -207,8 +206,8 @@ const onMessage = async (msg) => {
             }
           }
         } else if (msg.type() === Message.MessageType.Audio) {
-          console.log(`[${key}]: [语音]`)
-          sendChatMessage(`[${key}]: [语音]`)
+          console.log(`[${key}](${msg.date().toLocaleString()}): [语音]`)
+          sendChatMessage(`[${key}](${msg.date().toLocaleString()}): [语音]`)
           if (userInfo[key].cur_model) {
             try {
               // 不保存，直接传stream
@@ -247,10 +246,10 @@ const onMessage = async (msg) => {
     if (messageStr) {
       try {
         await msg.say(messageStr)
-        sendChatMessage(`[${config.puppet.name}]：${messageStr}`)
+        sendChatMessage(`[${config.puppet.name}](${new Date().toLocaleString()})：${messageStr}`)
       } catch (error) {
         await msg.say(`Error: ${error.message ? error.message : error.code || ''}`)
-        sendChatMessage(`Error: ${error.message ? error.message : error.code || ''}`)
+        sendChatMessage(`[${config.puppet.name}](${new Date().toLocaleString()})：Error: ${error.message ? error.message : error.code || ''}`)
       }
     }
   }
