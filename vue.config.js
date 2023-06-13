@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-07 16:17:18
+ * @LastEditTime: 2023-06-13 16:53:18
  * @FilePath: \electron-wechaty\vue.config.js
  */
 const { defineConfig } = require('@vue/cli-service')
@@ -16,9 +16,9 @@ module.exports = defineConfig({
       builderOptions: {
         // build配置在此处
         asar: false,
-        productName:"Wechaty Robot",
+        productName: "Wechaty Robot",
         appId: "com.wechaty.robot.songsong",
-        copyright:"songsong",
+        copyright: "songsong",
         // directories: {
         //   output: "dist_electron"
         // },
