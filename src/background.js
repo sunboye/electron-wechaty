@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-13 22:04:31
+ * @LastEditTime: 2023-06-13 23:28:32
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -64,7 +64,19 @@ if (!gotTheLock) {
         console.error('Vue Devtools failed to install:', e.toString())
       }
     }
-  
+    const iconSrc = app.isPackage ? './icons/favicon32.ico' : '../public/icons/favicon32.png'
+    icon = nativeImage.createFromPath(path.join(__dirname, iconSrc))
+    tray = new Tray(icon)
+    const contextMenu = Menu.buildFromTemplate([
+      { label: '打开主界面', click: () => { win.show(); } },
+      { label: '退出', click: () => { appQuit() } }
+    ])
+
+    tray.setToolTip('Wechaty-robot')
+    tray.setContextMenu(contextMenu)
+    tray.on('double-click', () => {
+      win.isVisible() ? win.hide() : win.show()
+    })
     ipcMain.handle('bot:getBotConfig', getBotConfig)
     ipcMain.handle('bot:getChildModel', getChildModel)
     ipcMain.handle('bot:setBotConfig', (event, conf) => {
@@ -121,26 +133,12 @@ async function createWindow() {
         contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
       }
     })
-    const iconSrc = app.isPackage ? './icons/favicon.icon' : '../public/icons/favicon.png'
-    console.log(__dirname)
-    icon = nativeImage.createFromPath(path.join(__dirname, iconSrc))
-    tray = new Tray(icon)
-    const contextMenu = Menu.buildFromTemplate([
-    { label: '打开主界面', click: () => { win.show() } },
-    { label: '退出', click: () => { appQuit() } }
-    ])
-
-    tray.setToolTip('Wechaty-robot')
-    tray.setContextMenu(contextMenu)
-    tray.on('double-click', () => {
-    win.isVisible() ? win.hide() : win.show()
-    })
     win.on('close', (event) => {
       win.hide();
-      win.setSkipTaskbar(true);
+      // win.setSkipTaskbar(true);
       event.preventDefault();
     });
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
     ipcMain.on('bot:startBot', () => {
       startBot()
     })
