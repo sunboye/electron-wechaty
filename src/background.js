@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-13 21:46:17
+ * @LastEditTime: 2023-06-13 22:04:31
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -121,7 +121,7 @@ async function createWindow() {
         contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
       }
     })
-    const iconSrc = app.isPackage ? './resources/app/icons/favicon.png' : '../public/icons/favicon.png'
+    const iconSrc = app.isPackage ? './icons/favicon.icon' : '../public/icons/favicon.png'
     console.log(__dirname)
     icon = nativeImage.createFromPath(path.join(__dirname, iconSrc))
     tray = new Tray(icon)
