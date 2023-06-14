@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-06-05 11:26:38
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-10 00:21:15
+ * @LastEditTime: 2023-06-14 21:55:54
  * @FilePath: \electron-wechaty\src\util.js
  */
 
@@ -36,7 +36,7 @@ const setBotConfig = (conf) => {
     fs.writeFileSync(path.join(appPath, configPath), jsonStr)
     conf.openai.sourceDir = app.isPackaged ? `./resources/${conf.openai.sourceDir}` : conf.openai.sourceDir
     setCommonConfig(conf)
-    return {success: true}
+    return {success: true, dir: __dirname}
   } catch (error) {
     return {success: false, msg: error.message}
   }
