@@ -46,6 +46,7 @@ module.exports = defineConfig({
         },
         nsis: {
           oneClick: false,
+          perMachine: true,
           allowElevation: true,
           allowToChangeInstallationDirectory: true,
           installerIcon: "./public/icons/favicon.ico",

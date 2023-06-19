@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-04-15 10:50:49
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-12 15:14:37
+ * @LastEditTime: 2023-06-19 11:02:22
  * @FilePath: \electron-wechaty\src\services\message\message.js
  */
 import { FileBox } from 'file-box'
@@ -168,7 +168,7 @@ const intervalDelete = async () => {
         } else {
           const contact = await getBot().Contact.find({ name: key})
           if (contact) {
-            const userMsg = `提示：您已经${config.bot.warnTime}分钟没说话了，如果需要继续使用当前功能，请回复任意内容，否则${config.puppet.name}将在${config.bot.clearTime}分钟后离开，离开之后您可回复任意内容唤醒${config.puppet.name}。`
+            const userMsg = `提示：您已经${config.bot.warnTime}分钟没说话了，如果需要继续使用当前功能，请回复任意内容，否则${config.puppet.name}将在${config.bot.clearTime}分钟后离开，离开之后您可回复任意内容唤醒${config.puppet.name}，如果您想使用其他功能，请回复*返回主菜单。`
             contact.say(userMsg)
             sendChatMessage(`${new Date().toLocaleString()}\n${userMsg}`)
           }
