@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-14 22:06:04
+ * @LastEditTime: 2023-06-19 10:28:54
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -64,18 +64,6 @@ if (!gotTheLock) {
         console.error('Vue Devtools failed to install:', e.toString())
       }
     }
-    const iconPath = app.isPackaged ? './icons/favicon32.ico' : '../public/icons/favicon32.ico'
-    icon = nativeImage.createFromPath(path.join(__dirname, iconPath))
-    tray = new Tray(icon)
-    const contextMenu = Menu.buildFromTemplate([
-      { label: '打开主界面', click: () => { win.show(); } },
-      { label: '退出', click: () => { appQuit() } }
-    ])
-    tray.setContextMenu(contextMenu)
-    tray.setToolTip('Wechaty-robot')
-    tray.on('double-click', () => {
-      win.isVisible() ? win.hide() : win.show()
-    })
     ipcMain.handle('bot:getBotConfig', getBotConfig)
     ipcMain.handle('bot:getChildModel', getChildModel)
     ipcMain.handle('bot:setBotConfig', (event, conf) => {
@@ -102,8 +90,7 @@ if (!gotTheLock) {
     }
   }
 }
-  
-const appQuit = () => {
+function appQuit() {
   try {
     deleteMemory(true)
   } catch (error) {
@@ -137,6 +124,18 @@ async function createWindow() {
       // win.setSkipTaskbar(true);
       event.preventDefault();
     });
+    const iconPath = app.isPackaged ? './icons/favicon32.ico' : '../public/icons/favicon32.ico'
+    icon = nativeImage.createFromPath(path.join(__dirname, iconPath))
+    tray = new Tray(icon)
+    const contextMenu = Menu.buildFromTemplate([
+      { label: '打开主界面', click: () => { win.show(); } },
+      { label: '退出', click: () => { appQuit() } }
+    ])
+    tray.setContextMenu(contextMenu)
+    tray.setToolTip('Wechaty-robot')
+    tray.on('double-click', () => {
+      win.isVisible() ? win.hide() : win.show()
+    })
     // win.webContents.openDevTools()
     ipcMain.on('bot:startBot', () => {
       startBot()
