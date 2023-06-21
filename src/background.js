@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-21 10:19:47
+ * @LastEditTime: 2023-06-21 13:19:44
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -134,7 +134,8 @@ async function createWindow() {
     tray.setContextMenu(contextMenu)
     tray.setToolTip('Wechaty-robot')
     tray.on('double-click', () => {
-      win.isVisible() ? win.hide() : win.show()
+      // win.isVisible() ? win.hide() : 
+      win.show()
     })
     // win.webContents.openDevTools()
     ipcMain.on('bot:startBot', () => {
