@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-19 10:28:54
+ * @LastEditTime: 2023-06-21 10:19:47
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -109,7 +109,7 @@ async function createWindow() {
     // Create the browser window.
     win = new BrowserWindow({
       width: 800,
-      height: 680,
+      height: 600,
       webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
         // autoHideMenuBar: true, // 取消顶部菜单

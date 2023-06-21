@@ -3,20 +3,19 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-12 17:58:15
+ * @LastEditTime: 2023-06-21 10:42:46
  * @FilePath: \electron-wechaty\src\webapps\views\HomeView.vue
 -->
 <template>
   <div class="home-page">
     <!-- inline -->
     <el-form ref="configForm" :model="configForm" :rules="configRules" label-position="left" label-width="100px">
-      <el-form-item label="机器人名称" prop="name">
+      <!-- <el-form-item label="机器人名称" prop="name">
         <el-input v-model="configForm.name" clearable placeholder="机器人名称"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="协议">
         <el-radio-group v-model="configForm.protocol">
           <el-radio label="wechaty-puppet-wechat">wechaty-puppet-wechat</el-radio>
-          <!-- <el-radio label="wechaty-puppet-wechat4u">wechaty-puppet-wechat4u</el-radio> -->
           <el-radio label="wechaty-puppet-padlocal">wechaty-puppet-padlocal</el-radio>
         </el-radio-group>
       </el-form-item>
@@ -37,11 +36,16 @@
       <el-form-item label="清理时间" prop="clearTime">
         <el-input v-model="configForm.clearTime" type="number" :min="1" :max="10" placeholder="提示之后几分钟之后清理聊天记录缓存"></el-input>
       </el-form-item>
-      <el-form-item label="功能定制" prop="childs">
+      <el-form-item label="基本功能" prop="childs">
         <el-checkbox-group v-model="configForm.childs">
           <el-checkbox v-for="item in childModes" :key="item.keyword" :label="item.keyword" :disabled="item.keyword === 'model-welcome'">{{item.title}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
+      <!-- <el-form-item label="定时任务" prop="childs">
+        <el-checkbox-group v-model="configForm.childs">
+          <el-checkbox v-for="item in childModes" :key="item.keyword" :label="item.keyword" :disabled="item.keyword === 'model-welcome'">{{item.title}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item> -->
       <el-form-item>
         <el-row class="btn-row">
           <!-- <el-button @click="$router.push('/about')">前进</el-button>

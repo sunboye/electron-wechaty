@@ -13,7 +13,6 @@
     }
   },
   "bot": {
-    "qrcodeUrl": "https://wechaty.js.org/qrcode/",
     "warnTime": 10,
     "clearTime": 3
   }

@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:17:08
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-12 17:58:52
+ * @LastEditTime: 2023-06-21 10:25:53
  * @FilePath: \electron-wechaty\src\webapps\views\AboutView.vue
 -->
 <template>
