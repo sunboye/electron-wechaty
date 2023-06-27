@@ -3,17 +3,10 @@
  * @Position: 
  * @Date: 2023-06-06 19:48:42
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-27 15:55:38
+ * @LastEditTime: 2023-06-27 16:03:02
  * @FilePath: \electron-wechaty\README.md
 -->
 # electron-wechaty
-
-## win64安装包下载地址
-
-> 下载最新版本exe
-
-https://github.com/sunboye/electron-wechaty/releases
-
 
 ## Project setup
 ```
@@ -37,3 +30,14 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## win64安装包下载地址
+
+> 下载最新版本exe
+
+https://github.com/sunboye/electron-wechaty/releases
+
+### 现有版本
+#### v1.1.0
+- [win64下载点击这里](https://github.com/sunboye/electron-wechaty/releases/download/v1.1.0/Wechaty.Robot.1.1.0.win64.exe)
