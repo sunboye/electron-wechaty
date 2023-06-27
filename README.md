@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-06-06 19:48:42
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-27 16:03:02
+ * @LastEditTime: 2023-06-27 16:04:33
  * @FilePath: \electron-wechaty\README.md
 -->
 # electron-wechaty
@@ -32,7 +32,7 @@ yarn lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
-## win64安装包下载地址
+## 安装包下载
 
 > 下载最新版本exe
 
