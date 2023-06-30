@@ -3,7 +3,7 @@
  * @Position: 
  * @Date: 2023-05-29 18:23:01
  * @LastEditors: yangss
- * @LastEditTime: 2023-06-21 13:19:44
+ * @LastEditTime: 2023-06-30 21:56:26
  * @FilePath: \electron-wechaty\src\background.js
  */
 'use strict'
@@ -124,7 +124,7 @@ async function createWindow() {
       // win.setSkipTaskbar(true);
       event.preventDefault();
     });
-    const iconPath = app.isPackaged ? './icons/favicon32.ico' : '../public/icons/favicon32.ico'
+    const iconPath = app.isPackaged ? './icons/favicon.ico' : '../public/icons/favicon.ico'
     icon = nativeImage.createFromPath(path.join(__dirname, iconPath))
     tray = new Tray(icon)
     const contextMenu = Menu.buildFromTemplate([
