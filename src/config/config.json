@@ -1,6 +1,6 @@
 {
   "openai": {
-    "apiKey": "1113213",
+    "apiKey": "",
     "proxy": "",
     "sourceDir": "openai_cache",
     "organizationId": ""
