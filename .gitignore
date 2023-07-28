@@ -15,8 +15,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-#*.lock
-#*-lock.json
+*.lock
+*-lock.json
 *memory-card.json
 
 # Editor directories and files
