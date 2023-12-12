@@ -157,6 +157,8 @@ export default {
           this.configBase.proxy = config.openai.proxy && config.openai.proxy.indexOf('//') > -1 ? config.openai.proxy.split('//')[1] : config.openai.proxy || ''
           this.configBase.warnTime = config.bot.warnTime
           this.configBase.clearTime = config.bot.clearTime
+          this.configBase.model = config.chat.model
+          this.configBase.maxTokens = config.chat.max_tokens
         }
         if (child && Object.keys(child).length) {
           this.childData = cloneDeep(child)

@@ -1,7 +1,7 @@
 {
   "openai": {
-    "apiKey": "",
-    "proxy": "",
+    "apiKey": "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",
+    "proxy": "http://127.0.0.1:21882",
     "sourceDir": "openai_cache",
     "organizationId": ""
   },
@@ -13,8 +13,8 @@
     }
   },
   "chat": {
-    "model": "gpt-3.5-turbo",
-    "max_tokens": 2000
+    "model": "gpt-3.5-turbo-16k",
+    "max_tokens": "1500"
   },
   "bot": {
     "warnTime": 10,
