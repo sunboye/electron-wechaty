@@ -158,7 +158,7 @@ export default {
           this.configBase.warnTime = config.bot.warnTime
           this.configBase.clearTime = config.bot.clearTime
           this.configBase.model = config.chat.model
-          this.configBase.maxTokens = config.chat.max_tokens
+          this.configBase.maxTokens = Number(config.chat.max_tokens)
         }
         if (child && Object.keys(child).length) {
           this.childData = cloneDeep(child)
@@ -190,7 +190,7 @@ export default {
             }
           }
           this.configData.chat.model = this.configForm.model || ''
-          this.configData.chat.max_tokens = this.configForm.maxTokens || ''
+          this.configData.chat.max_tokens = Number(this.configForm.maxTokens) || ''
           this.configData.openai.apiKey = this.configForm.apiKey
           this.configData.openai.proxy = this.configForm.proxy ? `http://${this.configForm.proxy}` : ''
           this.configData.bot.warnTime = Number(this.configForm.warnTime)

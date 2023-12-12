@@ -47,7 +47,7 @@ const startBot = () => {
   }
   bot.start().then(() => {
     sendStartLog(`Starter Bot Started.`)
-    const openAI = getOpenAI()
+    const openAI = getOpenAI() || {}
     openAI.clearSourceDir()
   }).catch(e => {
     sendStartLog(`StarterBot: ${e}`)

@@ -14,7 +14,7 @@
   },
   "chat": {
     "model": "gpt-3.5-turbo-16k",
-    "max_tokens": "1500"
+    "max_tokens": 1500
   },
   "bot": {
     "warnTime": 10,
