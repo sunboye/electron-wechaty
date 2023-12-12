@@ -12,6 +12,10 @@
       "uos": true
     }
   },
+  "chat": {
+    "model": "gpt-3.5-turbo",
+    "max_tokens": 2000
+  },
   "bot": {
     "warnTime": 10,
     "clearTime": 3

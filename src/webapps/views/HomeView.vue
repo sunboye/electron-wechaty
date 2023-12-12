@@ -30,6 +30,12 @@
           <template slot="prepend">http://</template>
         </el-input>
       </el-form-item>
+      <el-form-item label="model" prop="model">
+        <el-input v-model="configForm.model" clearable placeholder="model"></el-input>
+      </el-form-item>
+      <el-form-item label="maxTokens" prop="maxTokens">
+        <el-input v-model="configForm.maxTokens" type="number" :min="500" :max="4097" clearable placeholder="model"></el-input>
+      </el-form-item>
       <el-form-item label="提示时间" prop="warnTime">
         <el-input v-model="configForm.warnTime" type="number" :min="1" :max="60" placeholder="几分钟不发消息进行提示用户"></el-input>
       </el-form-item>
@@ -104,6 +110,8 @@ export default {
         proxy: '',
         warnTime: 10,
         clearTime: 3,
+        model: 'gpt-3.5-turbo',
+        maxTokens: 1000,
         childs: ['model-welcome']
       },
       configForm: {
@@ -114,6 +122,8 @@ export default {
         proxy: '',
         warnTime: 10,
         clearTime: 3,
+        model: 'gpt-3.5-turbo-16k',
+        maxTokens: 2000,
         childs: ['model-welcome']
       },
       configRules: {
@@ -177,6 +187,8 @@ export default {
               uos: true
             }
           }
+          this.configData.chat.model = this.configForm.model || ''
+          this.configData.chat.max_tokens = this.configForm.maxTokens || ''
           this.configData.openai.apiKey = this.configForm.apiKey
           this.configData.openai.proxy = this.configForm.proxy ? `http://${this.configForm.proxy}` : ''
           this.configData.bot.warnTime = Number(this.configForm.warnTime)

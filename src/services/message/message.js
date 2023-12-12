@@ -118,9 +118,11 @@ const createAudioChat = async (key, file) => {
   }
 }
 const chatCompletions = async (key, text) => {
+  const conmmonConfig = getCommonConfig() || {}
   // 3.5模型
   const params = {
-    max_tokens: 1000,
+    model: conmmonConfig.chat && conmmonConfig.chat.model ? conmmonConfig.chat.model : '',
+    max_tokens: conmmonConfig.chat && conmmonConfig.chat.max_tokens ? conmmonConfig.chat.max_tokens : 1000,
     max_arr: 30,
     context: key
   }
